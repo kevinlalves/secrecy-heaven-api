@@ -4,6 +4,7 @@ import supertest from 'supertest';
 import { createUser } from '../factories';
 import { cleanDb } from '../helpers';
 import app, { init } from '@/app';
+import { unprocessableEntity } from '@/utils/constants';
 
 beforeAll(async () => {
   await init();
@@ -13,18 +14,18 @@ beforeAll(async () => {
 const server = supertest(app);
 
 describe('POST /auth/sign-in', () => {
-  it('should respond with status 400 when body is not given', async () => {
+  it('should respond with status 422 when body is not given', async () => {
     const response = await server.post('/auth/sign-in');
 
-    expect(response.status).toBe(httpStatus.BAD_REQUEST);
+    expect(response.status).toBe(unprocessableEntity);
   });
 
-  it('should respond with status 400 when body is not valid', async () => {
+  it('should respond with status 422 when body is not valid', async () => {
     const invalidBody = { [faker.lorem.word()]: faker.lorem.word() };
 
     const response = await server.post('/auth/sign-in').send(invalidBody);
 
-    expect(response.status).toBe(httpStatus.BAD_REQUEST);
+    expect(response.status).toBe(unprocessableEntity);
   });
 
   describe('when body is valid', () => {

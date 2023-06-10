@@ -1,17 +1,14 @@
 import 'reflect-metadata';
 import 'express-async-errors';
 import express, { Express, json } from 'express';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import appRouter from './routers';
-import { loadEnv, connectDb, disconnectDB, connectRedis } from '@/config';
+import appRouter from '@/routers';
+import { corsConfig, connectDb, disconnectDB, connectRedis } from '@/config';
 import { handleApplicationErrors } from '@/middlewares';
-
-loadEnv();
 
 const app = express();
 app
-  .use(cors())
+  .use(corsConfig())
   .use(cookieParser())
   .use(json())
   .get('/health', (_req, res) => res.sendStatus(200))

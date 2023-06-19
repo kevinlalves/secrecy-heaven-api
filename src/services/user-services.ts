@@ -5,7 +5,7 @@ import { saltRounds } from '@/utils/constants/bcrypt';
 import { usersRepository } from '@/repositories';
 import { conflictError } from '@/errors';
 
-export async function createUser(params: z.infer<typeof createUserSchema>) {
+async function createUser(params: z.infer<typeof createUserSchema>) {
   const { name, email, password } = params;
 
   const user = await usersRepository.findByEmail(email);

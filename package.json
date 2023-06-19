@@ -81,6 +81,7 @@
     "typescript-transform-paths": "2.2.3"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.354.0",
     "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@prisma/client": "^4.15.0",
     "axios": "^1.4.0",

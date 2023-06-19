@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
-import { JwtPayload } from 'jsonwebtoken';
 import { usersRepository } from '@/repositories';
 import { authenticationServices } from '@/services';
 import { signInSchema } from '@/schemas';
 import { jwtTokenDuration, sessionKeyName } from '@/utils/constants';
 import { exclude } from '@/utils/functions';
+import { JWTPayload } from '@/middlewares';
 
 export async function singIn(req: Request, res: Response, next: NextFunction) {
   const { email, password } = req.body as z.infer<typeof signInSchema>;
@@ -26,7 +26,7 @@ export async function singIn(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function getCurrentUser(_req: Request, res: Response, next: NextFunction) {
-  const { userId }: JwtPayload = res.locals;
+  const { userId } = res.locals as JWTPayload;
 
   try {
     const user = await usersRepository.findById(userId);

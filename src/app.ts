@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import appRouter from '@/routers';
 import { corsConfig, connectDb, disconnectDB, connectRedis } from '@/config';
 import { handleApplicationErrors } from '@/middlewares';
+import '@/config/aws';
 
 const app = express();
 app

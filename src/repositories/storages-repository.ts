@@ -7,4 +7,11 @@ function create(data: Omit<Storage, 'id'>, tx?: TransactionClient) {
   return client.storage.create({ data });
 }
 
-export default { create };
+function fetchStorageByNameAndUser(name: string, userId: string) {
+  return prisma.storage.findFirst({
+    where: { name, userId },
+    include: { storageParts: { orderBy: { partPosition: 'asc' } } },
+  });
+}
+
+export default { create, fetchStorageByNameAndUser };

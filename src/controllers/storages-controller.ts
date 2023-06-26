@@ -15,3 +15,16 @@ export async function createStorage(req: Request, res: Response, next: NextFunct
     next(err);
   }
 }
+
+export async function getStorage(req: Request, res: Response, next: NextFunction) {
+  const { userId } = res.locals as JWTPayload;
+  const { name } = req.params;
+
+  try {
+    const { fileData, fileName } = await storageServices.downloadFile(name, userId);
+
+    res.set('Content-Disposition', `attachment; filename=${fileName}`).send(fileData);
+  } catch (err) {
+    next(err);
+  }
+}

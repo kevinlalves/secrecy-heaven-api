@@ -18,23 +18,24 @@ model User {
 }
 
 model Storage {
-  id          String        @id @default(dbgenerated("gen_random_uuid()"))
-  name        String
-  userId      String        @map("user_id")
-  user        User          @relation(fields: [userId], references: [id])
-  StoragePart StoragePart[]
+  id           String        @id @default(dbgenerated("gen_random_uuid()"))
+  name         String
+  userId       String        @map("user_id")
+  user         User          @relation(fields: [userId], references: [id])
+  storageParts StoragePart[]
 
+  @@unique(fields: [name, userId])
   @@map("storages")
 }
 
 model Provider {
-  id          String        @id @default(dbgenerated("gen_random_uuid()"))
-  name        String
-  apiUrl      String        @map("api_url")
-  apiKey      String        @map("api_key")
-  StoragePart StoragePart[]
+  id           String        @id @default(dbgenerated("gen_random_uuid()"))
+  name         String        @unique
+  apiUrl       String        @map("api_url")
+  apiKey       String        @map("api_key")
+  storageParts StoragePart[]
 
-  @@map("provider")
+  @@map("providers")
 }
 
 model StoragePart {
@@ -46,5 +47,6 @@ model StoragePart {
   providerId   String   @map("provider_id")
   provider     Provider @relation(fields: [providerId], references: [id])
 
+  @@unique(fields: [externalId, providerId])
   @@map("storage_parts")
 }

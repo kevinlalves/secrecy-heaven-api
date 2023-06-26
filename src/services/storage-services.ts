@@ -77,11 +77,10 @@ async function createStoragePart(
   storageId: string,
   tx?: TransactionClient,
 ) {
-  const providerFile = await storeFileAws(filePartBytes, storageId, partPosition);
-  console.log(providerFile);
+  await storeFileAws(filePartBytes, storageId, partPosition);
   const provider = (await providersRepository.fetchByName('aws')) as Provider;
   await storagePartsRepository.create(
-    { partPosition, storageId, providerId: provider.id, externalId: providerFile.ETag as string },
+    { partPosition, storageId, providerId: provider.id, externalId: `${storageId}/${partPosition}` as string },
     tx,
   );
 }

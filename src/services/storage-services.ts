@@ -26,8 +26,8 @@ async function fetchFileAws(storageId: string, partPosition: number) {
   return fileObject.Body?.transformToByteArray();
 }
 
-async function downloadFile(name: string, userId: string) {
-  const storage = await storagesRepository.fetchStorageByNameAndUser(name, userId);
+async function downloadFile(storageId: string) {
+  const storage = await storagesRepository.fetchStorageById(storageId);
   if (!storage) throw notFoundError('There is no file with the given name');
 
   const fileDataParts = (await Promise.all(
@@ -62,6 +62,15 @@ async function createStorage(file: Express.Multer.File, userId: string) {
   });
 }
 
+async function fetchStorages(userId: string) {
+  const storages = await storagesRepository.fetchStoragesByUser(userId);
+
+  return storages.map((storage) => ({
+    id: storage.id,
+    fileName: storage.name,
+  }));
+}
+
 async function createStoragePart(
   filePartBytes: Buffer,
   partPosition: number,
@@ -83,4 +92,5 @@ export default {
   storeFileAws,
   fetchFileAws,
   downloadFile,
+  fetchStorages,
 };
